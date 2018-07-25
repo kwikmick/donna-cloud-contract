@@ -1,0 +1,28 @@
+buildscript {
+    dependencies {
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.5.RELEASE'
+        classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:${findProperty('verifierVersion') ?: verifierVersion}"
+        classpath 'nl.donna.gradle:donna-release-plugin:1.7.0'
+    }
+}
+
+group = 'com.example'
+
+apply plugin: 'java-library'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'spring-cloud-contract'
+apply plugin: 'nl.donna.gradle.donna-release'
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$BOM_VERSION"
+    }
+}
+
+dependencies {
+    compile("org.springframework.cloud:spring-cloud-starter-contract-verifier")
+}
+
+contracts {
+    contractsDslDir = file("${project.rootDir}/src/main/resources/contracts")
+}
